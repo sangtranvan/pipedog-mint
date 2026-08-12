@@ -5,70 +5,143 @@
 <meta name="viewport" content="width=device-width,initial-scale=1">
 <title>PiPeDog — Mint</title>
 <style>
-*{box-sizing:border-box}body{margin:0;font-family:Inter,Arial,sans-serif;background:#0b0f16;color:#fff;min-height:100vh}
-.wrap{max-width:920px;margin:auto;padding:32px 18px 60px}.card{background:#121925;border:1px solid #263246;border-radius:24px;padding:28px;box-shadow:0 18px 60px #0006}
-.hero{display:grid;grid-template-columns:1fr 1fr;gap:28px;align-items:center}.art{width:100%;aspect-ratio:1/1;border-radius:18px;object-fit:cover;border:1px solid #344157}
-h1{font-size:44px;margin:0 0 8px}.sub{color:#aeb9cb;margin:0 0 24px}.price{font-size:28px;font-weight:800;margin:12px 0}.small{font-size:14px;color:#9eabc0}
-.row{display:flex;gap:10px;align-items:center;margin:18px 0}.qty{display:flex;align-items:center;background:#0b111c;border:1px solid #334158;border-radius:14px;overflow:hidden}
-.qty button{width:48px;height:46px;border:0;background:transparent;color:#fff;font-size:24px;cursor:pointer}.qty span{width:54px;text-align:center;font-weight:700}
-button.primary{flex:1;height:48px;border:0;border-radius:14px;background:#fff;color:#0b0f16;font-weight:800;font-size:16px;cursor:pointer}
-button.primary:disabled{opacity:.5;cursor:not-allowed}.secondary{display:inline-flex;align-items:center;justify-content:center;min-height:44px;padding:0 16px;border:1px solid #334158;border-radius:12px;color:#dce5f4;text-decoration:none;font-weight:700;background:#0b111c;flex:1}
-.stats{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-top:18px}.stat{background:#0b111c;border:1px solid #202c3e;border-radius:14px;padding:14px}.stat b{display:block;font-size:20px;margin-top:4px}
-.wallet{margin-top:12px;padding:12px;border-radius:12px;background:#0b111c;color:#aeb9cb;font-size:13px;word-break:break-all}.status{margin-top:16px;min-height:22px;color:#dce5f4}
-.footer{margin-top:22px;color:#7f8da3;font-size:12px;line-height:1.6}a{color:#b8d2ff}@media(max-width:700px){.hero{grid-template-columns:1fr}h1{font-size:36px}}
+*{box-sizing:border-box}
+body{margin:0;font-family:Inter,Arial,sans-serif;background:#0b0f16;color:#fff;min-height:100vh}
+.wrap{max-width:920px;margin:auto;padding:32px 18px 60px}
+.card{background:#121925;border:1px solid #263246;border-radius:24px;padding:28px;box-shadow:0 18px 60px #0006}
+.hero{display:grid;grid-template-columns:1fr 1fr;gap:28px;align-items:center}
+.art{width:100%;aspect-ratio:1/1;border-radius:18px;object-fit:cover;border:1px solid #344157}
+h1{font-size:44px;margin:0 0 8px}.sub{color:#aeb9cb;margin:0 0 24px}
+.price{font-size:28px;font-weight:800;margin:12px 0}.small{font-size:14px;color:#9eabc0}
+.row{display:flex;gap:10px;align-items:center;margin:18px 0}
+.qty{display:flex;align-items:center;background:#0b111c;border:1px solid #334158;border-radius:14px;overflow:hidden}
+.qty button{width:48px;height:46px;border:0;background:transparent;color:#fff;font-size:24px;cursor:pointer}
+.qty span{width:54px;text-align:center;font-weight:700}
+button.primary{flex:1;height:48px;border:0;border-radius:14px;background:#fff;color:#0b0f16;font-weight:800;font-size:16px;cursor:pointer;opacity:1!important}
+button.primary:disabled{opacity:.55!important;cursor:not-allowed}
+.secondary{display:inline-flex;align-items:center;justify-content:center;min-height:44px;padding:0 16px;border:1px solid #334158;border-radius:12px;color:#dce5f4;text-decoration:none;font-weight:700;background:#0b111c;flex:1}
+.stats{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-top:18px}
+.stat{background:#0b111c;border:1px solid #202c3e;border-radius:14px;padding:14px}
+.stat b{display:block;font-size:20px;margin-top:4px}
+.wallet{margin-top:12px;padding:12px;border-radius:12px;background:#0b111c;color:#aeb9cb;font-size:13px;word-break:break-all}
+.status{margin-top:16px;min-height:22px;color:#dce5f4}
+.notice{margin-top:10px;padding:10px 12px;border-radius:10px;background:#0b111c;border:1px solid #263246;color:#aeb9cb;font-size:13px;display:none}
+.footer{margin-top:22px;color:#7f8da3;font-size:12px;line-height:1.6}
+a{color:#b8d2ff}
+@media(max-width:700px){.hero{grid-template-columns:1fr}h1{font-size:36px}}
 </style>
 </head>
 <body>
-<div class="wrap"><div class="card"><div class="hero">
-<div><img class="art" src="https://bafybeihmsvt46qcjqja56vuvvxgwzpfbqlrg6cs6twfyyt57iehze45mvi.ipfs.dweb.link" alt="PiPeDog Classic"></div>
+<div class="wrap">
+<div class="card">
+<div class="hero">
 <div>
-<h1>PiPeDog</h1><p class="sub">Minecraft-inspired NFT Collection on Robinhood Chain</p>
-<div class="price">0.0033 ETH / NFT</div><div class="small">Mint 1–5 NFTs per transaction</div>
-<div class="row"><div class="qty"><button id="minus">−</button><span id="qty">1</span><button id="plus">+</button></div><button class="primary" id="mint">Connect Wallet</button></div>
-<div class="stats"><div class="stat"><span class="small">Còn lại public</span><b id="remaining">483</b></div><div class="stat"><span class="small">Tổng đã mint</span><b id="minted">17</b></div></div>
-<div class="wallet" id="wallet">Chưa kết nối ví</div><div class="status" id="status"></div>
+<img class="art" src="https://bafybeihmsvt46qcjqja56vuvvxgwzpfbqlrg6cs6twfyyt57iehze45mvi.ipfs.dweb.link" alt="PiPeDog Classic">
+</div>
+<div>
+<h1>PiPeDog</h1>
+<p class="sub">Minecraft-inspired NFT Collection on Robinhood Chain</p>
+<div class="price">0.0033 ETH / NFT</div>
+<div class="small">Mint 1–5 NFTs per transaction</div>
+
+<div class="row">
+<div class="qty">
+<button id="minus">−</button><span id="qty">1</span><button id="plus">+</button>
+</div>
+<button class="primary" id="action">Connect Wallet</button>
+</div>
+
+<div id="notice" class="notice"></div>
+
+<div class="stats">
+<div class="stat"><span class="small">Còn lại public</span><b id="remaining">483</b></div>
+<div class="stat"><span class="small">Tổng đã mint</span><b id="minted">17</b></div>
+</div>
+
+<div class="wallet" id="wallet">Chưa kết nối ví</div>
+<div class="status" id="status"></div>
+
 <div class="row" style="margin-top:12px">
 <a class="secondary" href="https://opensea.io/item/robinhood/0x08B89D3c1d2b2CBD25E965d7ebbEbd5400b14849/1" target="_blank" rel="noopener">View on OpenSea</a>
 <a class="secondary" href="https://robinhoodchain.blockscout.com/address/0x08B89D3c1d2b2CBD25E965d7ebbEbd5400b14849" target="_blank" rel="noopener">View Contract</a>
 </div>
-</div></div>
-<div class="footer">Contract: <a href="https://robinhoodchain.blockscout.com/address/0x08B89D3c1d2b2CBD25E965d7ebbEbd5400b14849" target="_blank" rel="noopener">0x08B89D3c1d2b2CBD25E965d7ebbEbd5400b14849</a><br>Network: Robinhood Chain · Chain ID 4663 · ETH</div>
-</div></div>
+</div>
+</div>
+
+<div class="footer">
+Contract:
+<a href="https://robinhoodchain.blockscout.com/address/0x08B89D3c1d2b2CBD25E965d7ebbEbd5400b14849" target="_blank" rel="noopener">0x08B89D3c1d2b2CBD25E965d7ebbEbd5400b14849</a><br>
+Network: Robinhood Chain · Chain ID 4663 · ETH
+</div>
+</div>
+</div>
 
 <script src="https://cdn.jsdelivr.net/npm/ethers@6.15.0/dist/ethers.umd.min.js"></script>
 <script>
 const CONTRACT="0x08B89D3c1d2b2CBD25E965d7ebbEbd5400b14849";
 const CHAIN_ID="0x1237";
 const RPC="https://rpc.mainnet.chain.robinhood.com";
-const ABI=["function publicMint(uint256 quantity) payable","function remainingPublic() view returns (uint256)","function totalMinted() view returns (uint256)"];
+const ABI=[
+  "function publicMint(uint256 quantity) payable",
+  "function remainingPublic() view returns (uint256)",
+  "function totalMinted() view returns (uint256)"
+];
 
-let walletProvider=null, provider=null, signer=null, contract=null, readProvider=null, readContract=null, quantity=1;
+let walletProvider=null;
+let provider=null;
+let signer=null;
+let contract=null;
+let account=null;
+let quantity=1;
+
 const $=id=>document.getElementById(id);
 
-function setStatus(t){$("status").textContent=t}
-function updateQty(){
+function setStatus(text){$("status").textContent=text}
+
+function updateUI(){
   $("qty").textContent=quantity;
-  $("mint").textContent=walletProvider ? `Mint ${quantity} NFT — ${(0.0033*quantity).toFixed(4)} ETH` : "Connect Wallet";
+  $("action").textContent=account
+    ? `Mint ${quantity} NFT — ${(0.0033*quantity).toFixed(4)} ETH`
+    : "Connect Wallet";
 }
 
-$("minus").onclick=()=>{if(quantity>1){quantity--;updateQty()}};
-$("plus").onclick=()=>{if(quantity<5){quantity++;updateQty()}};
+$("minus").onclick=()=>{
+  if(quantity>1){quantity--;updateUI();}
+};
+$("plus").onclick=()=>{
+  if(quantity<5){quantity++;updateUI();}
+};
 
-async function refresh(){
-  try{
-    if(!readContract){
-      readProvider=new ethers.JsonRpcProvider(RPC);
-      readContract=new ethers.Contract(CONTRACT,ABI,readProvider);
-    }
-    const [remaining,minted]=await Promise.all([readContract.remainingPublic(),readContract.totalMinted()]);
-    $("remaining").textContent=remaining.toString();
-    $("minted").textContent=minted.toString();
-  }catch(e){console.warn(e)}
+function announceProvider(event){
+  const p=event.detail.provider;
+  const info=event.detail.info||{};
+  if(!walletProvider || /metamask/i.test(info.name||"") || /metamask/i.test(info.rdns||"")){
+    walletProvider=p;
+  }
+  $("notice").style.display="none";
+  setStatus("Đã tìm thấy MetaMask. Bấm Connect Wallet.");
+  updateUI();
 }
 
-async function switchNetwork(){
+window.addEventListener("eip6963:announceProvider",announceProvider);
+
+async function discoverWallet(){
+  if(walletProvider) return walletProvider;
+  if(window.ethereum){
+    walletProvider=window.ethereum;
+    return walletProvider;
+  }
+  window.dispatchEvent(new Event("eip6963:requestProvider"));
+  await new Promise(resolve=>setTimeout(resolve,700));
+  return walletProvider;
+}
+
+async function switchToRobinhood(){
   try{
-    await walletProvider.request({method:"wallet_switchEthereumChain",params:[{chainId:CHAIN_ID}]});
+    await walletProvider.request({
+      method:"wallet_switchEthereumChain",
+      params:[{chainId:CHAIN_ID}]
+    });
   }catch(e){
     if(e.code!==4902) throw e;
     await walletProvider.request({
@@ -84,71 +157,103 @@ async function switchNetwork(){
   }
 }
 
-async function connect(){
+async function connectWallet(){
   try{
-    if(!walletProvider){
-      setStatus("Không tìm thấy ví EVM trong trình duyệt. Hãy mở MetaMask hoặc Robinhood Wallet rồi tải lại trang.");
+    const p=await discoverWallet();
+
+    if(!p){
+      $("notice").style.display="block";
+      $("notice").textContent="Không tìm thấy MetaMask. Hãy mở MetaMask trong trình duyệt rồi tải lại trang.";
+      setStatus("Không có ví EVM được trình duyệt cung cấp.");
       return;
     }
-    await walletProvider.request({method:"eth_requestAccounts"});
-    await switchNetwork();
+
+    setStatus("Đang mở MetaMask...");
+    const accounts=await p.request({method:"eth_requestAccounts"});
+
+    if(!accounts || !accounts[0]){
+      throw new Error("Bạn chưa chọn tài khoản trong MetaMask.");
+    }
+
+    walletProvider=p;
+
+    await switchToRobinhood();
 
     provider=new ethers.BrowserProvider(walletProvider);
     signer=await provider.getSigner();
-    const address=await signer.getAddress();
+    account=await signer.getAddress();
 
     contract=new ethers.Contract(CONTRACT,ABI,signer);
-    $("wallet").textContent=address;
-    updateQty();
-    await refresh();
-    setStatus("Ví đã kết nối. Bạn có thể mint.");
+
+    $("wallet").textContent=account;
+    $("notice").style.display="none";
+    setStatus("Đã kết nối ví trên Robinhood Chain. Bạn có thể mint.");
+    updateUI();
   }catch(e){
     setStatus(e.shortMessage||e.reason||e.message||"Không kết nối được ví.");
+    updateUI();
   }
 }
 
 async function mint(){
   try{
-    $("mint").disabled=true;
+    if(!contract || !signer || !account){
+      await connectWallet();
+      if(!contract) return;
+    }
+
+    $("action").disabled=true;
     setStatus("Đang chờ MetaMask xác nhận...");
-    const value=ethers.parseEther((0.0033*quantity).toFixed(4));
+
+    const total=0.0033*quantity;
+    const value=ethers.parseEther(total.toFixed(4));
+
     const tx=await contract.publicMint(quantity,{value});
+
     setStatus("Đã gửi giao dịch. Đang chờ xác nhận...");
     await tx.wait();
-    $("status").innerHTML=`🎉 Mint thành công! NFT đã được gửi vào ví của bạn.<div style="margin-top:8px"><a href="https://robinhoodchain.blockscout.com/tx/${tx.hash}" target="_blank" rel="noopener">Xem giao dịch trên Blockscout →</a></div>`;
-    await refresh();
+
+    $("status").innerHTML=
+      `🎉 Mint thành công! NFT đã được gửi vào ví của bạn.
+       <div style="margin-top:8px">
+       <a href="https://robinhoodchain.blockscout.com/tx/${tx.hash}" target="_blank" rel="noopener">
+       Xem giao dịch trên Blockscout →
+       </a></div>`;
+
+    await refreshStats();
   }catch(e){
     setStatus(e.shortMessage||e.reason||e.message||"Mint thất bại.");
   }finally{
-    $("mint").disabled=false;
-    updateQty();
+    $("action").disabled=false;
+    updateUI();
   }
 }
 
-$("mint").onclick=()=>walletProvider?mint():connect();
+$("action").onclick=()=>{
+  if(account && contract) mint();
+  else connectWallet();
+};
 
-/* EIP-6963: discover MetaMask/other browser wallets reliably. */
-window.addEventListener("eip6963:announceProvider",(event)=>{
-  const info=event.detail.info;
-  const candidate=event.detail.provider;
-  if(info && (info.rdns||"").toLowerCase().includes("metamask")){
-    walletProvider=candidate;
-    setStatus("Đã tìm thấy MetaMask. Bấm Connect Wallet.");
-    updateQty();
-  }else if(!walletProvider){
-    walletProvider=candidate;
-    updateQty();
+async function refreshStats(){
+  try{
+    const readProvider=new ethers.JsonRpcProvider(RPC);
+    const readContract=new ethers.Contract(CONTRACT,ABI,readProvider);
+
+    const [remaining,minted]=await Promise.all([
+      readContract.remainingPublic(),
+      readContract.totalMinted()
+    ]);
+
+    $("remaining").textContent=remaining.toString();
+    $("minted").textContent=minted.toString();
+  }catch(e){
+    console.warn("Stats:",e);
   }
-});
+}
+
 window.dispatchEvent(new Event("eip6963:requestProvider"));
-
-/* Legacy fallback used by older injected wallets. */
-if(window.ethereum && !walletProvider){
-  walletProvider=window.ethereum;
-  updateQty();
-}
-
-refresh();
+refreshStats();
+updateUI();
 </script>
 </body>
 </html>
