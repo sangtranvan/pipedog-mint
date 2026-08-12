@@ -24,7 +24,7 @@ button.primary:disabled{opacity:.5;cursor:not-allowed}.secondary{display:inline-
 <div>
 <h1>PiPeDog</h1><p class="sub">Minecraft-inspired NFT Collection on Robinhood Chain</p>
 <div class="price">0.0033 ETH / NFT</div><div class="small">Mint 1–5 NFTs per transaction</div>
-<div class="row"><div class="qty"><button id="minus">−</button><span id="qty">1</span><button id="plus">+</button></div><button class="primary" id="mint" disabled>Connect Wallet</button></div>
+<div class="row"><div class="qty"><button id="minus">−</button><span id="qty">1</span><button id="plus">+</button></div><button class="primary" id="mint">Connect Wallet</button></div>
 <div class="stats"><div class="stat"><span class="small">Còn lại public</span><b id="remaining">483</b></div><div class="stat"><span class="small">Tổng đã mint</span><b id="minted">17</b></div></div>
 <div class="wallet" id="wallet">Chưa kết nối ví</div><div class="status" id="status"></div>
 <div class="row" style="margin-top:12px">
@@ -34,17 +34,121 @@ button.primary:disabled{opacity:.5;cursor:not-allowed}.secondary{display:inline-
 </div></div>
 <div class="footer">Contract: <a href="https://robinhoodchain.blockscout.com/address/0x08B89D3c1d2b2CBD25E965d7ebbEbd5400b14849" target="_blank" rel="noopener">0x08B89D3c1d2b2CBD25E965d7ebbEbd5400b14849</a><br>Network: Robinhood Chain · Chain ID 4663 · ETH</div>
 </div></div>
+
 <script src="https://cdn.jsdelivr.net/npm/ethers@6.15.0/dist/ethers.umd.min.js"></script>
 <script>
-const CONTRACT="0x08B89D3c1d2b2CBD25E965d7ebbEbd5400b14849",CHAIN_ID="0x1237",RPC="https://rpc.mainnet.chain.robinhood.com",ABI=["function publicMint(uint256 quantity) payable","function remainingPublic() view returns (uint256)","function totalMinted() view returns (uint256)"];
-let provider,signer,contract,readProvider,readContract,quantity=1;const $=id=>document.getElementById(id);
+const CONTRACT="0x08B89D3c1d2b2CBD25E965d7ebbEbd5400b14849";
+const CHAIN_ID="0x1237";
+const RPC="https://rpc.mainnet.chain.robinhood.com";
+const ABI=["function publicMint(uint256 quantity) payable","function remainingPublic() view returns (uint256)","function totalMinted() view returns (uint256)"];
+
+let walletProvider=null, provider=null, signer=null, contract=null, readProvider=null, readContract=null, quantity=1;
+const $=id=>document.getElementById(id);
+
 function setStatus(t){$("status").textContent=t}
-function updateQty(){$("qty").textContent=quantity;$("mint").textContent=provider?`Mint ${quantity} NFT — ${(0.0033*quantity).toFixed(4)} ETH`:"Connect Wallet"}
-$("minus").onclick=()=>{if(quantity>1){quantity--;updateQty()}};$("plus").onclick=()=>{if(quantity<5){quantity++;updateQty()}};
-async function addOrSwitchNetwork(){if(!window.ethereum)throw new Error("Bạn cần cài MetaMask.");try{await window.ethereum.request({method:"wallet_switchEthereumChain",params:[{chainId:CHAIN_ID}]})}catch(e){if(e.code!==4902)throw e;await window.ethereum.request({method:"wallet_addEthereumChain",params:[{chainId:CHAIN_ID,chainName:"Robinhood Chain",nativeCurrency:{name:"Ether",symbol:"ETH",decimals:18},rpcUrls:[RPC],blockExplorerUrls:["https://robinhoodchain.blockscout.com"]}]})}}
-async function refresh(){try{if(!readContract){readProvider=new ethers.JsonRpcProvider(RPC);readContract=new ethers.Contract(CONTRACT,ABI,readProvider)}const [remaining,minted]=await Promise.all([readContract.remainingPublic(),readContract.totalMinted()]);$("remaining").textContent=remaining.toString();$("minted").textContent=minted.toString()}catch(e){console.warn(e)}}
-async function connect(){try{if(!window.ethereum)throw new Error("Bạn cần cài MetaMask.");await addOrSwitchNetwork();provider=new ethers.BrowserProvider(window.ethereum);signer=await provider.getSigner();const address=await signer.getAddress();contract=new ethers.Contract(CONTRACT,ABI,signer);$("wallet").textContent=address;$("mint").disabled=false;updateQty();await refresh();setStatus("Ví đã kết nối. Bạn có thể mint.")}catch(e){setStatus(e.shortMessage||e.message||"Không kết nối được ví.")}}
-async function mint(){try{$("mint").disabled=true;setStatus("Đang chờ MetaMask xác nhận...");const value=ethers.parseEther((0.0033*quantity).toFixed(4));const tx=await contract.publicMint(quantity,{value});setStatus("Đã gửi giao dịch. Đang chờ xác nhận...");await tx.wait();setStatus("🎉 Mint thành công! NFT đã được gửi vào ví của bạn.");const link=document.createElement("div");link.style.marginTop="8px";link.innerHTML=`<a href="https://robinhoodchain.blockscout.com/tx/${tx.hash}" target="_blank" rel="noopener">Xem giao dịch trên Blockscout →</a>`;$("status").appendChild(link);await refresh()}catch(e){setStatus(e.shortMessage||e.reason||e.message||"Mint thất bại.")}finally{$("mint").disabled=false;updateQty()}}
-$("mint").onclick=()=>provider?mint():connect();updateQty();refresh();
-if(window.ethereum){window.ethereum.on("accountsChanged",()=>location.reload());window.ethereum.on("chainChanged",()=>location.reload())}
-</script></body></html>
+function updateQty(){
+  $("qty").textContent=quantity;
+  $("mint").textContent=walletProvider ? `Mint ${quantity} NFT — ${(0.0033*quantity).toFixed(4)} ETH` : "Connect Wallet";
+}
+
+$("minus").onclick=()=>{if(quantity>1){quantity--;updateQty()}};
+$("plus").onclick=()=>{if(quantity<5){quantity++;updateQty()}};
+
+async function refresh(){
+  try{
+    if(!readContract){
+      readProvider=new ethers.JsonRpcProvider(RPC);
+      readContract=new ethers.Contract(CONTRACT,ABI,readProvider);
+    }
+    const [remaining,minted]=await Promise.all([readContract.remainingPublic(),readContract.totalMinted()]);
+    $("remaining").textContent=remaining.toString();
+    $("minted").textContent=minted.toString();
+  }catch(e){console.warn(e)}
+}
+
+async function switchNetwork(){
+  try{
+    await walletProvider.request({method:"wallet_switchEthereumChain",params:[{chainId:CHAIN_ID}]});
+  }catch(e){
+    if(e.code!==4902) throw e;
+    await walletProvider.request({
+      method:"wallet_addEthereumChain",
+      params:[{
+        chainId:CHAIN_ID,
+        chainName:"Robinhood Chain",
+        nativeCurrency:{name:"Ether",symbol:"ETH",decimals:18},
+        rpcUrls:[RPC],
+        blockExplorerUrls:["https://robinhoodchain.blockscout.com"]
+      }]
+    });
+  }
+}
+
+async function connect(){
+  try{
+    if(!walletProvider){
+      setStatus("Không tìm thấy ví EVM trong trình duyệt. Hãy mở MetaMask hoặc Robinhood Wallet rồi tải lại trang.");
+      return;
+    }
+    await walletProvider.request({method:"eth_requestAccounts"});
+    await switchNetwork();
+
+    provider=new ethers.BrowserProvider(walletProvider);
+    signer=await provider.getSigner();
+    const address=await signer.getAddress();
+
+    contract=new ethers.Contract(CONTRACT,ABI,signer);
+    $("wallet").textContent=address;
+    updateQty();
+    await refresh();
+    setStatus("Ví đã kết nối. Bạn có thể mint.");
+  }catch(e){
+    setStatus(e.shortMessage||e.reason||e.message||"Không kết nối được ví.");
+  }
+}
+
+async function mint(){
+  try{
+    $("mint").disabled=true;
+    setStatus("Đang chờ MetaMask xác nhận...");
+    const value=ethers.parseEther((0.0033*quantity).toFixed(4));
+    const tx=await contract.publicMint(quantity,{value});
+    setStatus("Đã gửi giao dịch. Đang chờ xác nhận...");
+    await tx.wait();
+    $("status").innerHTML=`🎉 Mint thành công! NFT đã được gửi vào ví của bạn.<div style="margin-top:8px"><a href="https://robinhoodchain.blockscout.com/tx/${tx.hash}" target="_blank" rel="noopener">Xem giao dịch trên Blockscout →</a></div>`;
+    await refresh();
+  }catch(e){
+    setStatus(e.shortMessage||e.reason||e.message||"Mint thất bại.");
+  }finally{
+    $("mint").disabled=false;
+    updateQty();
+  }
+}
+
+$("mint").onclick=()=>walletProvider?mint():connect();
+
+/* EIP-6963: discover MetaMask/other browser wallets reliably. */
+window.addEventListener("eip6963:announceProvider",(event)=>{
+  const info=event.detail.info;
+  const candidate=event.detail.provider;
+  if(info && (info.rdns||"").toLowerCase().includes("metamask")){
+    walletProvider=candidate;
+    setStatus("Đã tìm thấy MetaMask. Bấm Connect Wallet.");
+    updateQty();
+  }else if(!walletProvider){
+    walletProvider=candidate;
+    updateQty();
+  }
+});
+window.dispatchEvent(new Event("eip6963:requestProvider"));
+
+/* Legacy fallback used by older injected wallets. */
+if(window.ethereum && !walletProvider){
+  walletProvider=window.ethereum;
+  updateQty();
+}
+
+refresh();
+</script>
+</body>
+</html>
