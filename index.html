@@ -5,167 +5,46 @@
 <meta name="viewport" content="width=device-width,initial-scale=1">
 <title>PiPeDog — Mint</title>
 <style>
-*{box-sizing:border-box}
-body{margin:0;font-family:Inter,Arial,sans-serif;background:#0b0f16;color:#fff;min-height:100vh}
-.wrap{max-width:920px;margin:auto;padding:32px 18px 60px}
-.card{background:#121925;border:1px solid #263246;border-radius:24px;padding:28px;box-shadow:0 18px 60px #0006}
-.hero{display:grid;grid-template-columns:1fr 1fr;gap:28px;align-items:center}
-.art{width:100%;aspect-ratio:1/1;border-radius:18px;object-fit:cover;border:1px solid #344157}
-h1{font-size:44px;margin:0 0 8px;letter-spacing:-1px}
-.sub{color:#aeb9cb;margin:0 0 24px}
-.price{font-size:28px;font-weight:800;margin:12px 0}
-.small{font-size:14px;color:#9eabc0}
-.row{display:flex;gap:10px;align-items:center;margin:18px 0}
-.qty{display:flex;align-items:center;background:#0b111c;border:1px solid #334158;border-radius:14px;overflow:hidden}
-.qty button{width:48px;height:46px;border:0;background:transparent;color:#fff;font-size:24px;cursor:pointer}
-.qty span{width:54px;text-align:center;font-weight:700}
+*{box-sizing:border-box}body{margin:0;font-family:Inter,Arial,sans-serif;background:#0b0f16;color:#fff;min-height:100vh}
+.wrap{max-width:920px;margin:auto;padding:32px 18px 60px}.card{background:#121925;border:1px solid #263246;border-radius:24px;padding:28px;box-shadow:0 18px 60px #0006}
+.hero{display:grid;grid-template-columns:1fr 1fr;gap:28px;align-items:center}.art{width:100%;aspect-ratio:1/1;border-radius:18px;object-fit:cover;border:1px solid #344157}
+h1{font-size:44px;margin:0 0 8px}.sub{color:#aeb9cb;margin:0 0 24px}.price{font-size:28px;font-weight:800;margin:12px 0}.small{font-size:14px;color:#9eabc0}
+.row{display:flex;gap:10px;align-items:center;margin:18px 0}.qty{display:flex;align-items:center;background:#0b111c;border:1px solid #334158;border-radius:14px;overflow:hidden}
+.qty button{width:48px;height:46px;border:0;background:transparent;color:#fff;font-size:24px;cursor:pointer}.qty span{width:54px;text-align:center;font-weight:700}
 button.primary{flex:1;height:48px;border:0;border-radius:14px;background:#fff;color:#0b0f16;font-weight:800;font-size:16px;cursor:pointer}
-button.primary:disabled{opacity:.5;cursor:not-allowed}
-.wallet{margin-top:12px;padding:12px;border-radius:12px;background:#0b111c;color:#aeb9cb;font-size:13px;word-break:break-all}
-.status{margin-top:16px;min-height:22px;color:#dce5f4}
-.stats{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-top:18px}
-.stat{background:#0b111c;border:1px solid #202c3e;border-radius:14px;padding:14px}
-.stat b{display:block;font-size:20px;margin-top:4px}
-.footer{margin-top:22px;color:#7f8da3;font-size:12px;line-height:1.6}
-a{color:#b8d2ff}
-@media(max-width:700px){.hero{grid-template-columns:1fr}h1{font-size:36px}}
+button.primary:disabled{opacity:.5;cursor:not-allowed}.secondary{display:inline-flex;align-items:center;justify-content:center;min-height:44px;padding:0 16px;border:1px solid #334158;border-radius:12px;color:#dce5f4;text-decoration:none;font-weight:700;background:#0b111c;flex:1}
+.stats{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-top:18px}.stat{background:#0b111c;border:1px solid #202c3e;border-radius:14px;padding:14px}.stat b{display:block;font-size:20px;margin-top:4px}
+.wallet{margin-top:12px;padding:12px;border-radius:12px;background:#0b111c;color:#aeb9cb;font-size:13px;word-break:break-all}.status{margin-top:16px;min-height:22px;color:#dce5f4}
+.footer{margin-top:22px;color:#7f8da3;font-size:12px;line-height:1.6}a{color:#b8d2ff}@media(max-width:700px){.hero{grid-template-columns:1fr}h1{font-size:36px}}
 </style>
 </head>
 <body>
-<div class="wrap">
-  <div class="card">
-    <div class="hero">
-      <div>
-        <img class="art" src="https://bafybeihmsvt46qcjqja56vuvvxgwzpfbqlrg6cs6twfyyt57iehze45mvi.ipfs.dweb.link" alt="PiPeDog Classic">
-      </div>
-      <div>
-        <h1>PiPeDog</h1>
-        <p class="sub">Minecraft-inspired NFT Collection on Robinhood Chain</p>
-        <div class="price">0.0033 ETH / NFT</div>
-        <div class="small">Mint 1–5 NFTs per transaction</div>
-
-        <div class="row">
-          <div class="qty">
-            <button id="minus">−</button>
-            <span id="qty">1</span>
-            <button id="plus">+</button>
-          </div>
-          <button class="primary" id="mint" disabled>Connect Wallet</button>
-        </div>
-
-        <div class="stats">
-          <div class="stat"><span class="small">Còn lại public</span><b id="remaining">—</b></div>
-          <div class="stat"><span class="small">Tổng đã mint</span><b id="minted">—</b></div>
-        </div>
-
-        <div class="wallet" id="wallet">Chưa kết nối ví</div>
-        <div class="status" id="status"></div>
-      </div>
-    </div>
-    <div class="footer">
-      Contract: <a href="https://robinhoodchain.blockscout.com/address/0x08B89D3c1d2b2CBD25E965d7ebbEbd5400b14849" target="_blank" rel="noopener">0x08B89D3c1d2b2CBD25E965d7ebbEbd5400b14849</a><br>
-      Network: Robinhood Chain · Chain ID 4663 · ETH
-    </div>
-  </div>
+<div class="wrap"><div class="card"><div class="hero">
+<div><img class="art" src="https://bafybeihmsvt46qcjqja56vuvvxgwzpfbqlrg6cs6twfyyt57iehze45mvi.ipfs.dweb.link" alt="PiPeDog Classic"></div>
+<div>
+<h1>PiPeDog</h1><p class="sub">Minecraft-inspired NFT Collection on Robinhood Chain</p>
+<div class="price">0.0033 ETH / NFT</div><div class="small">Mint 1–5 NFTs per transaction</div>
+<div class="row"><div class="qty"><button id="minus">−</button><span id="qty">1</span><button id="plus">+</button></div><button class="primary" id="mint" disabled>Connect Wallet</button></div>
+<div class="stats"><div class="stat"><span class="small">Còn lại public</span><b id="remaining">483</b></div><div class="stat"><span class="small">Tổng đã mint</span><b id="minted">17</b></div></div>
+<div class="wallet" id="wallet">Chưa kết nối ví</div><div class="status" id="status"></div>
+<div class="row" style="margin-top:12px">
+<a class="secondary" href="https://opensea.io/item/robinhood/0x08B89D3c1d2b2CBD25E965d7ebbEbd5400b14849/1" target="_blank" rel="noopener">View on OpenSea</a>
+<a class="secondary" href="https://robinhoodchain.blockscout.com/address/0x08B89D3c1d2b2CBD25E965d7ebbEbd5400b14849" target="_blank" rel="noopener">View Contract</a>
 </div>
-
+</div></div>
+<div class="footer">Contract: <a href="https://robinhoodchain.blockscout.com/address/0x08B89D3c1d2b2CBD25E965d7ebbEbd5400b14849" target="_blank" rel="noopener">0x08B89D3c1d2b2CBD25E965d7ebbEbd5400b14849</a><br>Network: Robinhood Chain · Chain ID 4663 · ETH</div>
+</div></div>
 <script src="https://cdn.jsdelivr.net/npm/ethers@6.15.0/dist/ethers.umd.min.js"></script>
 <script>
-const CONTRACT = "0x08B89D3c1d2b2CBD25E965d7ebbEbd5400b14849";
-const CHAIN_ID = "0x1237"; // 4663
-const RPC = "https://rpc.mainnet.chain.robinhood.com";
-const PRICE = "0.0033";
-const ABI = [
-  "function publicMint(uint256 quantity) payable",
-  "function remainingPublic() view returns (uint256)",
-  "function totalMinted() view returns (uint256)",
-  "function MINT_PRICE() view returns (uint256)"
-];
-
-let provider, signer, contract, quantity = 1;
-const $ = id => document.getElementById(id);
-function setStatus(t){ $("status").textContent = t; }
-
-function updateQty(){
-  $("qty").textContent = quantity;
-  $("mint").textContent = provider ? `Mint ${quantity} NFT — ${(0.0033*quantity).toFixed(4)} ETH` : "Connect Wallet";
-}
-$("minus").onclick = () => { if(quantity>1){quantity--;updateQty();} };
-$("plus").onclick = () => { if(quantity<5){quantity++;updateQty();} };
-
-async function addOrSwitchNetwork(){
-  if(!window.ethereum) throw new Error("Không tìm thấy MetaMask.");
-  try{
-    await window.ethereum.request({method:"wallet_switchEthereumChain",params:[{chainId:CHAIN_ID}]});
-  }catch(e){
-    if(e.code !== 4902) throw e;
-    await window.ethereum.request({
-      method:"wallet_addEthereumChain",
-      params:[{
-        chainId: CHAIN_ID,
-        chainName:"Robinhood Chain",
-        nativeCurrency:{name:"Ether",symbol:"ETH",decimals:18},
-        rpcUrls:[RPC],
-        blockExplorerUrls:["https://robinhoodchain.blockscout.com"]
-      }]
-    });
-  }
-}
-
-async function refresh(){
-  if(!contract) return;
-  try{
-    const [remaining, minted] = await Promise.all([
-      contract.remainingPublic(),
-      contract.totalMinted()
-    ]);
-    $("remaining").textContent = remaining.toString();
-    $("minted").textContent = minted.toString();
-  }catch(e){ console.warn(e); }
-}
-
-async function connect(){
-  try{
-    if(!window.ethereum) throw new Error("Bạn cần cài MetaMask.");
-    await addOrSwitchNetwork();
-    provider = new ethers.BrowserProvider(window.ethereum);
-    signer = await provider.getSigner();
-    const address = await signer.getAddress();
-    contract = new ethers.Contract(CONTRACT, ABI, signer);
-    $("wallet").textContent = address;
-    $("mint").disabled = false;
-    updateQty();
-    await refresh();
-    setStatus("Ví đã kết nối. Bạn có thể mint.");
-  }catch(e){
-    setStatus(e.shortMessage || e.message || "Không kết nối được ví.");
-  }
-}
-
-async function mint(){
-  try{
-    $("mint").disabled = true;
-    setStatus("Đang chờ MetaMask xác nhận...");
-    const value = ethers.parseEther((0.0033 * quantity).toFixed(4));
-    const tx = await contract.publicMint(quantity,{value});
-    setStatus("Đã gửi giao dịch. Đang chờ xác nhận...");
-    await tx.wait();
-    setStatus("🎉 Mint thành công! NFT đã được gửi vào ví của bạn.");
-    await refresh();
-  }catch(e){
-    setStatus(e.shortMessage || e.reason || e.message || "Mint thất bại.");
-  }finally{
-    $("mint").disabled = false;
-    updateQty();
-  }
-}
-
-$("mint").onclick = () => provider ? mint() : connect();
-if(window.ethereum){
-  window.ethereum.on("accountsChanged", () => location.reload());
-  window.ethereum.on("chainChanged", () => location.reload());
-}
-updateQty();
-</script>
-</body>
-</html>
+const CONTRACT="0x08B89D3c1d2b2CBD25E965d7ebbEbd5400b14849",CHAIN_ID="0x1237",RPC="https://rpc.mainnet.chain.robinhood.com",ABI=["function publicMint(uint256 quantity) payable","function remainingPublic() view returns (uint256)","function totalMinted() view returns (uint256)"];
+let provider,signer,contract,readProvider,readContract,quantity=1;const $=id=>document.getElementById(id);
+function setStatus(t){$("status").textContent=t}
+function updateQty(){$("qty").textContent=quantity;$("mint").textContent=provider?`Mint ${quantity} NFT — ${(0.0033*quantity).toFixed(4)} ETH`:"Connect Wallet"}
+$("minus").onclick=()=>{if(quantity>1){quantity--;updateQty()}};$("plus").onclick=()=>{if(quantity<5){quantity++;updateQty()}};
+async function addOrSwitchNetwork(){if(!window.ethereum)throw new Error("Bạn cần cài MetaMask.");try{await window.ethereum.request({method:"wallet_switchEthereumChain",params:[{chainId:CHAIN_ID}]})}catch(e){if(e.code!==4902)throw e;await window.ethereum.request({method:"wallet_addEthereumChain",params:[{chainId:CHAIN_ID,chainName:"Robinhood Chain",nativeCurrency:{name:"Ether",symbol:"ETH",decimals:18},rpcUrls:[RPC],blockExplorerUrls:["https://robinhoodchain.blockscout.com"]}]})}}
+async function refresh(){try{if(!readContract){readProvider=new ethers.JsonRpcProvider(RPC);readContract=new ethers.Contract(CONTRACT,ABI,readProvider)}const [remaining,minted]=await Promise.all([readContract.remainingPublic(),readContract.totalMinted()]);$("remaining").textContent=remaining.toString();$("minted").textContent=minted.toString()}catch(e){console.warn(e)}}
+async function connect(){try{if(!window.ethereum)throw new Error("Bạn cần cài MetaMask.");await addOrSwitchNetwork();provider=new ethers.BrowserProvider(window.ethereum);signer=await provider.getSigner();const address=await signer.getAddress();contract=new ethers.Contract(CONTRACT,ABI,signer);$("wallet").textContent=address;$("mint").disabled=false;updateQty();await refresh();setStatus("Ví đã kết nối. Bạn có thể mint.")}catch(e){setStatus(e.shortMessage||e.message||"Không kết nối được ví.")}}
+async function mint(){try{$("mint").disabled=true;setStatus("Đang chờ MetaMask xác nhận...");const value=ethers.parseEther((0.0033*quantity).toFixed(4));const tx=await contract.publicMint(quantity,{value});setStatus("Đã gửi giao dịch. Đang chờ xác nhận...");await tx.wait();setStatus("🎉 Mint thành công! NFT đã được gửi vào ví của bạn.");const link=document.createElement("div");link.style.marginTop="8px";link.innerHTML=`<a href="https://robinhoodchain.blockscout.com/tx/${tx.hash}" target="_blank" rel="noopener">Xem giao dịch trên Blockscout →</a>`;$("status").appendChild(link);await refresh()}catch(e){setStatus(e.shortMessage||e.reason||e.message||"Mint thất bại.")}finally{$("mint").disabled=false;updateQty()}}
+$("mint").onclick=()=>provider?mint():connect();updateQty();refresh();
+if(window.ethereum){window.ethereum.on("accountsChanged",()=>location.reload());window.ethereum.on("chainChanged",()=>location.reload())}
+</script></body></html>
